@@ -1,0 +1,504 @@
+import javax.swing.JOptionPane;
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+
+public class Loan {
+   private ArrayList<String> transactionHistory = new ArrayList<>();
+
+   double currentLoan = 0;
+   double interestRate = 0.05;
+   int loanBalance = 0;
+
+   // Encapsulate
+   private int balance;
+   private String fullName;
+
+   public void lBalance(int balance) {
+      this.balance = balance;
+   }
+
+   public void lFullName(String fullName) {
+      this.fullName = fullName;
+   }
+
+   private String safeInput(String message) {
+      String input = JOptionPane.showInputDialog(message);
+      if (input == null) {
+         JOptionPane.showMessageDialog(null,
+            "Operation Cancelled",
+            "Warning",
+            JOptionPane.WARNING_MESSAGE);
+         return null;
+      }
+   
+      input = input.trim();
+      if (input.isEmpty()) {
+         JOptionPane.showMessageDialog(null,
+            "Invalid Input",
+            "Warning",
+            JOptionPane.WARNING_MESSAGE);
+         return null;
+      }
+      return input;
+   }
+
+   public int loanSystem() {
+   
+      while (true) {
+         String[] options = {"Apply for Loan", "Pay Loan","Back", "Exit"};
+         int Options = JOptionPane.showOptionDialog(null,
+            "Choose A Transaction",
+            "Main Menu",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.INFORMATION_MESSAGE,
+            null,
+            options,
+            options[0]);
+      
+         if (Options == 2) {
+            JOptionPane.showMessageDialog(null, "Returning To Main Menu...");
+            break;
+         }
+      
+         if (Options == 3) {
+            JOptionPane.showMessageDialog(null, "Thank You For Using BDO");
+            System.exit(0);
+         }
+      
+         // ================= APPLY LOAN =================
+         if (Options == 0) {
+         
+            JTextField fullNameField = new JTextField(15);
+            String[] gender = {"Male", "Female", "Others"};
+            JComboBox<String> genderBox = new JComboBox<>(gender);
+         
+            String[] civilStat = {"Single", "Married", "Separated", "Widowed", "Annulled/Divorced"};
+            JComboBox<String> civilBox = new JComboBox<>(civilStat);
+         
+            String[] citizenShip = {"Filipino", "Foreigner"};
+            JComboBox<String> citizenBox = new JComboBox<>(citizenShip);
+         
+            JTextField dateOfBirth = new JTextField(10);
+            JTextField mobileNum = new JTextField(12);
+            JTextField address = new JTextField(20);
+         
+            // Employment
+            String[] job = {"Software Developer", "Teacher", "Doctor", "Nurse", "Engineer",
+               "Student", "Manager", "Clerk", "Cashier", "Driver",
+               "Business Owner", "Farmer", "Artist", "Other"};
+            JComboBox<String> jobBox = new JComboBox<>(job);
+         
+            JTextField employerField = new JTextField(15);
+            JTextField incomeField = new JTextField(10);
+         
+            // Loan details
+            JTextField loanAmount = new JTextField(10);
+            JTextField loanTerm = new JTextField(5);
+            String[] purpose = {"Home Improvement", "Education", "Medical", "Business",
+               "Car Purchase", "Debt Consolidation", "Vacation", "Other"};
+            JComboBox<String> purposeBox = new JComboBox<>(purpose);
+         
+            JPanel panel = new JPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+         
+            panel.add(new JLabel("Full Name:"));
+            panel.add(fullNameField);
+            panel.add(Box.createVerticalStrut(8));
+         
+            panel.add(new JLabel("Date Of Birth (MM/DD/YYYY):"));
+            panel.add(dateOfBirth);
+            panel.add(Box.createVerticalStrut(8));
+         
+            panel.add(new JLabel("Gender:"));
+            panel.add(genderBox);
+            panel.add(Box.createVerticalStrut(8));
+         
+            panel.add(new JLabel("Civil Status:"));
+            panel.add(civilBox);
+            panel.add(Box.createVerticalStrut(8));
+         
+            panel.add(new JLabel("Citizenship:"));
+            panel.add(citizenBox);
+            panel.add(Box.createVerticalStrut(8));
+         
+            panel.add(new JLabel("Mobile Number:"));
+            panel.add(mobileNum);
+            panel.add(Box.createVerticalStrut(8));
+         
+            panel.add(new JLabel("Address:"));
+            panel.add(address);
+            panel.add(Box.createVerticalStrut(8));
+         
+            panel.add(new JLabel("Job / Occupation:"));
+            panel.add(jobBox);
+            panel.add(Box.createVerticalStrut(8));
+         
+            panel.add(new JLabel("Employer / Business Name:"));
+            panel.add(employerField);
+            panel.add(Box.createVerticalStrut(8));
+         
+            panel.add(new JLabel("Gross Monthly Income:"));
+            panel.add(incomeField);
+            panel.add(Box.createVerticalStrut(8));
+         
+            panel.add(new JLabel("Loan Amount:"));
+            panel.add(loanAmount);
+            panel.add(Box.createVerticalStrut(8));
+         
+            panel.add(new JLabel("Loan Term (months):"));
+            panel.add(loanTerm);
+            panel.add(Box.createVerticalStrut(8));
+         
+            panel.add(new JLabel("Purpose Of Loan:"));
+            panel.add(purposeBox);
+            panel.add(Box.createVerticalStrut(8));
+         
+            String[] Options3 = {"Confirm", "Cancel"};
+            boolean formFilled = false;
+         
+            while (!formFilled) {
+               int result = JOptionPane.showOptionDialog(
+                  null,
+                  panel,
+                  "Loan",
+                  JOptionPane.YES_NO_OPTION,
+                  JOptionPane.INFORMATION_MESSAGE,
+                  null,
+                  Options3,
+                  Options3[0]);
+            
+               if (result == JOptionPane.NO_OPTION || result == JOptionPane.CLOSED_OPTION) {
+                  JOptionPane.showMessageDialog(null,
+                     "Application Cancelled",
+                     "Info",
+                     JOptionPane.INFORMATION_MESSAGE);
+                  break;
+               }
+            
+               if (fullNameField.getText().isEmpty() ||
+                  dateOfBirth.getText().isEmpty() ||
+                  mobileNum.getText().isEmpty() ||
+                  address.getText().isEmpty() ||
+                  employerField.getText().isEmpty() ||
+                  incomeField.getText().isEmpty() ||
+                  loanAmount.getText().isEmpty() ||
+                  loanTerm.getText().isEmpty()) {
+               
+                  JOptionPane.showMessageDialog(null,
+                     "Warning: Please fill out all the required fields.",
+                     "Incomplete Form",
+                     JOptionPane.WARNING_MESSAGE);
+               } else {
+                  formFilled = true;
+               
+                  String agreement =
+                     "LOAN AGREEMENT\n\n" +
+                     "By clicking 'Accept', you agree to the following terms:\n" +
+                     "- An 8% Interest will be added to your loan amount.\n" +
+                     "- You will pay the full amount including interest and tax.\n" +
+                     "- Failure to pay may result in legal action.\n" +
+                     "- Your assets may be seized to recover the unpaid loan.\n" +
+                     "- All submitted information is considered legally binding.\n\n" +
+                     "Do you accept these terms?";
+               
+                  int accept = JOptionPane.showConfirmDialog(
+                     null,
+                     agreement,
+                     "Loan Agreement",
+                     JOptionPane.YES_NO_OPTION,
+                     JOptionPane.INFORMATION_MESSAGE
+                     );
+               
+                  if (accept == JOptionPane.YES_OPTION) {
+                  
+                     try {
+                                // FIXED: Convert loan input safely and check numeric
+                        double loan = Double.parseDouble(loanAmount.getText().trim());
+                        if (loan <= 0) {
+                           JOptionPane.showMessageDialog(null,
+                              "Loan amount must be greater than zero",
+                              "Warning",
+                              JOptionPane.WARNING_MESSAGE);
+                           formFilled = false;
+                           continue;
+                        }
+                     
+                     // 8% tax computation
+                        double interest = loan * 0.08;
+                        double totalLoan = loan + interest;
+                     
+                     // Update balances
+                        loanBalance += totalLoan;
+                        balance += totalLoan;
+                     
+                     // FIXED: Save user's name safely with trim
+                        this.fullName = fullNameField.getText().trim();
+                        transactionHistory.add(this.fullName + " applied for ₱" + totalLoan + " loan."); // ADDED
+                     
+                     
+                        JOptionPane.showMessageDialog(null,
+                           "Application submitted successfully!\n\n" +
+                           "Loan Amount: ₱" + loan + "\n" +
+                           "8% Interest Added: ₱" + interest + "\n" +
+                           "Total Loan Payable: ₱" + totalLoan + "\n\n" +
+                           "Thank you.");
+                     
+                     } catch (NumberFormatException e) { // FIXED: catch invalid numeric input
+                        JOptionPane.showMessageDialog(null,
+                           "Loan amount must be a numeric value!",
+                           "Warning",
+                           JOptionPane.WARNING_MESSAGE);
+                        formFilled = false;
+                     }
+                  
+                  } else {
+                     JOptionPane.showMessageDialog(
+                        null,
+                        "You must accept the agreement to apply for a loan.",
+                        "Agreement Required",
+                        JOptionPane.WARNING_MESSAGE);
+                     formFilled = false;
+                  }                  }
+            }
+         }
+      
+         // =================== PAY LOAN =======================
+         if (Options == 1) {
+         
+            String[] loanPayment = {"Full Payment", "Partial Payment", "View Loan Balance", "Back"};
+            JComboBox<String> loanPaymentBox = new JComboBox<>(loanPayment);
+         
+            JPanel panel = new JPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+         
+            panel.add(new JLabel("Choose How You Want To Pay: "));
+            panel.add(loanPaymentBox);
+            panel.add(Box.createVerticalStrut(8));
+         
+            String[] options2 = {"Confirm", "Cancel"};
+            int result2 = JOptionPane.showOptionDialog(
+               null,
+               panel,
+               "Loan",
+               JOptionPane.YES_NO_OPTION,
+               JOptionPane.INFORMATION_MESSAGE,
+               null,
+               options2,
+               options2[0]);
+         
+            if (result2 == JOptionPane.NO_OPTION || result2 == JOptionPane.CLOSED_OPTION) {
+               JOptionPane.showMessageDialog(null,
+                  "Payment Cancelled",
+                  "Info",
+                  JOptionPane.INFORMATION_MESSAGE);
+               continue;
+            }
+         
+            // ==== FULL PAYMENT ====
+            if (loanPaymentBox.getSelectedItem().equals("Full Payment")) {
+            
+               if (loanBalance <= 0) {
+                  JOptionPane.showMessageDialog(null,
+                     "You don't have any loan to pay!",
+                     "No Loan",
+                     JOptionPane.INFORMATION_MESSAGE);
+                  continue;
+               }
+            
+               JTextField fName = new JTextField();
+               JTextField fullPayment = new JTextField();
+            
+               JPanel panel1 = new JPanel();
+               panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
+            
+               panel1.add(new JLabel("Enter Full Name: "));
+               panel1.add(fName);
+               panel1.add(Box.createVerticalStrut(8));
+            
+               panel1.add(new JLabel("Enter Amount Of Payment: "));
+               panel1.add(fullPayment);
+               panel1.add(Box.createVerticalStrut(8));
+            
+               String[] cConfirm = {"Confirm", "Cancel"};
+               int result3 = JOptionPane.showOptionDialog(
+                  null,
+                  panel1,
+                  "Loan Payment",
+                  JOptionPane.YES_NO_OPTION,
+                  JOptionPane.INFORMATION_MESSAGE,
+                  null,
+                  cConfirm,
+                  cConfirm[0]);
+            
+               if (result3 == JOptionPane.NO_OPTION || result3 == JOptionPane.CLOSED_OPTION) {
+                  JOptionPane.showMessageDialog(null,
+                     "Payment Cancelled",
+                     "Info",
+                     JOptionPane.INFORMATION_MESSAGE);
+                  continue;
+               }
+            
+               // Validation
+               try {
+               
+                  if (!fName.getText().trim().equalsIgnoreCase(this.fullName)) {
+                     JOptionPane.showMessageDialog(null,
+                        "User Not Found",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+                     continue;
+                  }
+               
+                  String paymentText = fullPayment.getText().trim();
+               
+                  if (paymentText.isEmpty()) {
+                     JOptionPane.showMessageDialog(null,
+                        "Payment amount cannot be empty!",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+                     continue;
+                  }
+               
+                  double payment = Double.parseDouble(paymentText);
+               
+                  if (payment <= 0) {
+                     JOptionPane.showMessageDialog(null,
+                        "Payment must be greater than Zero",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+                     continue;
+                  }
+                  
+                  if (payment != loanBalance) {
+                     JOptionPane.showMessageDialog(null,
+                        "Insufficient Amount",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+                     continue;
+                  } // If Payment is Not enough
+               
+                  if (payment > balance) {
+                     JOptionPane.showMessageDialog(null,
+                        "Payment cannot be greater than your remaining loan balance of ₱" + balance,
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+                     continue;
+                  }
+               
+                  // Subtract payment from balance
+                  balance -= payment;
+                  loanBalance -= payment;
+               
+                  JOptionPane.showMessageDialog(null,
+                     "Payment successful! Remaining balance: ₱" + balance);
+               
+               } catch (NumberFormatException e) {
+                  JOptionPane.showMessageDialog(null,
+                     "Invalid input! Please enter a numeric value.",
+                     "Warning",
+                     JOptionPane.WARNING_MESSAGE);
+               }
+            }
+         
+            // ================= PARTIAL PAYMENT ===============
+            if (loanPaymentBox.getSelectedItem().equals("Partial Payment")) {
+            
+               JTextField partial = new JTextField();
+               JTextField fName1 = new JTextField();
+            
+               JPanel panel1 = new JPanel();
+               panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
+            
+               panel1.add(new JLabel("Enter Fullname: "));
+               panel1.add(fName1);
+               panel1.add(Box.createVerticalStrut(8));
+            
+               panel1.add(new JLabel("Enter Loan Amount: "));
+               panel1.add(partial);
+               panel1.add(Box.createVerticalStrut(8));
+            
+               String[] cConfirm1 = {"Confirm", "Cancel"};
+               int result4 = JOptionPane.showOptionDialog(
+                  null,
+                  panel1,
+                  "Loan",
+                  JOptionPane.YES_NO_OPTION,
+                  JOptionPane.INFORMATION_MESSAGE,
+                  null,
+                  cConfirm1,
+                  cConfirm1[0]);
+            
+               if (result4 == JOptionPane.NO_OPTION || result4 == JOptionPane.CLOSED_OPTION) {
+                  JOptionPane.showMessageDialog(null,
+                     "Payment Cancelled",
+                     "Loan",
+                     JOptionPane.WARNING_MESSAGE);
+                  continue;
+               }
+               
+               
+               // =====| VALIDATION |=====
+               try {
+                  if (this.fullName == null || !fName1.getText().trim().equalsIgnoreCase(this.fullName.trim())) {
+                     JOptionPane.showMessageDialog(null,
+                        "User Not Found",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+                     continue;
+                  }
+               
+                  String paymentText = partial.getText().trim();
+               
+                  if (paymentText.isEmpty()) {
+                     JOptionPane.showMessageDialog(null,
+                        "Payment Amount Cannot Be Empty",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+                     continue;
+                  }
+               
+                  double payment = Double.parseDouble(paymentText);
+               
+                  if (payment <= 0) {
+                     JOptionPane.showMessageDialog(null,
+                        "Invalid Payment",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+                     continue;
+                  }
+               
+                  if (payment > loanBalance) {
+                     JOptionPane.showMessageDialog(null,
+                        "Payment cannot be greater than your remaining loan balance of ₱" + loanBalance,
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+                     continue;
+                  }
+               
+                  balance -= payment;
+                  loanBalance -= payment;
+               
+                  JOptionPane.showMessageDialog(null,
+                     "Payment successful! Remaining balance: ₱" + balance);
+               
+               } catch (NumberFormatException e) {
+                  JOptionPane.showMessageDialog(null,
+                     "Invalid input! Please enter a numeric value.",
+                     "Warning",
+                     JOptionPane.WARNING_MESSAGE);
+               }
+            } // <- Partial Payment
+         
+            // View Loan Balance
+            if (loanPaymentBox.getSelectedItem().equals("View Loan Balance")) {
+               JOptionPane.showMessageDialog(null,
+                  "Your Current Loan Balance is: ₱" + loanBalance);
+            }
+         
+         }
+      }
+   
+      return balance;
+   }
+}
