@@ -1,0 +1,145 @@
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+public class Transfer {
+   // ArrayLists to store transaction history
+   private ArrayList<String> sender = new ArrayList<>();
+   private ArrayList<String> receiverName = new ArrayList<>();
+   private ArrayList<String> receiverAccNum = new ArrayList<>();
+   private ArrayList<String> receiverConNum = new ArrayList<>();
+   private ArrayList<Integer> transAmount = new ArrayList<>();
+   private ArrayList<String> transactionTimeHistory = new ArrayList<>();
+   private DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+   // Encapsulated fields
+   private int balance;
+   private int pin;
+   private String fullName;
+
+   // Setters
+   public void setBalance(int balance) { this.balance = balance; }
+   public void setPin(int pin) { this.pin = pin; }
+   public void setName(String fullName) { this.fullName = fullName; }
+
+   // Safe input for text fields
+   private String safeInput(String message) {
+      String input = JOptionPane.showInputDialog(message);
+      if (input == null) {
+         JOptionPane.showMessageDialog(null, "Operation cancelled. Returning to the main menu.");
+         return null;
+      }
+      input = input.trim();
+      if (input.isEmpty()) {
+         JOptionPane.showMessageDialog(null, "Invalid input. Please enter a value.", "Warning", JOptionPane.WARNING_MESSAGE);
+         return null;
+      }
+      return input;
+   }
+
+   // Safe input for option selection
+   private String safeOptionInput(String message, String[] options) {
+      String input = (String) JOptionPane.showInputDialog(null, message, "Select an Option", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+      if (input == null) {
+         JOptionPane.showMessageDialog(null, "Operation cancelled. Returning to the main menu.");
+         return null;
+      }
+      return input;
+   }
+
+   public int transferMoney() {
+      while (true) {
+         LocalDateTime now = LocalDateTime.now();
+      
+         String rName = safeInput("Enter receiver's full name:");
+         if (rName == null) 
+            return balance;
+      
+         String rAccNum = safeInput("Enter receiver's account number:");
+         if (rAccNum == null) 
+            return balance;
+      
+         String rConNum = safeInput("Enter receiver's contact number:");
+         if (rConNum == null) 
+            return balance;
+      
+         String[] reasons = { "Family Support", "Business Payment", "Loan Payment", "Education", "Donation", "Others" };
+         String reason = safeOptionInput("Select the purpose of transfer:", reasons);
+         if (reason == null) 
+            return balance;
+      
+         // Show transaction details before confirmation
+         String info = "=====| BDO Secure Transfer |====\n\n"
+                + "Sender: " + fullName + "\n"
+                + "Receiver: " + rName + "\n"
+                + "Account Number: " + rAccNum + "\n"
+                + "Contact Number: " + rConNum + "\n"
+                + "Purpose: " + reason + "\n"
+                + "Date & Time: " + now.format(format) + "\n"
+                + "------------------------------------------";
+         JOptionPane.showMessageDialog(null, info);
+      
+         int confirm = JOptionPane.showConfirmDialog(null, "Confirm this transaction?", "Transfer", JOptionPane.YES_NO_OPTION);
+         if (confirm == JOptionPane.NO_OPTION) {
+            JOptionPane.showMessageDialog(null, "Transaction cancelled. Returning to main menu...");
+            return balance;
+         }
+      
+         while (true) {
+            String tAmountStr = safeInput("Enter transfer amount:");
+            if (tAmountStr == null) 
+               return balance;
+         
+            try {
+               int tAmount = Integer.parseInt(tAmountStr);
+               if (balance < tAmount) {
+                  JOptionPane.showMessageDialog(null, "Insufficient balance.", "Warning", JOptionPane.WARNING_MESSAGE);
+                  continue;
+               }
+            
+               balance -= tAmount;
+            
+               // Add transaction to history
+               sender.add(fullName);
+               receiverName.add(rName);
+               receiverAccNum.add(rAccNum);
+               receiverConNum.add(rConNum);
+               transAmount.add(tAmount);
+               transactionTimeHistory.add(LocalDateTime.now().format(format));
+            
+               JOptionPane.showMessageDialog(null, "======| TRANSACTION RECEIPT |======\n\n"
+                      + "Sender: " + fullName + "\n"
+                      + "Receiver: " + rName + "\n"
+                      + "Transferred Amount: $" + tAmount + "\n"
+                      + "Current Balance: $" + balance + "\n"
+                      + "-----------------------------------");
+               break; // Transfer successful
+            } catch (NumberFormatException e) {
+               JOptionPane.showMessageDialog(null, "Invalid input. Please enter a numeric value.", "Warning", JOptionPane.WARNING_MESSAGE);
+            }
+         }
+      
+         return balance;
+      }
+   }
+
+   public void showTransferHistory() {
+      if (sender.isEmpty()) {
+         JOptionPane.showMessageDialog(null, "No transfer history available.", "Warning", JOptionPane.WARNING_MESSAGE);
+         return;
+      }
+   
+      StringBuilder sb = new StringBuilder("======| Transfer History |======\n\n");
+      for (int i = 0; i < sender.size(); i++) {
+         sb.append("Sender: ").append(sender.get(i)).append("\n");
+         sb.append("Receiver: ").append(receiverName.get(i)).append("\n");
+         sb.append("Contact Number: ").append(receiverConNum.get(i)).append("\n");
+         sb.append("Account Number: ").append(receiverAccNum.get(i)).append("\n");
+         sb.append("Transferred Amount: $").append(transAmount.get(i)).append("\n\n");
+         sb.append("Date & Time: ").append(transactionTimeHistory.get(i)).append("\n");
+         sb.append("------------------------------------------------------------\n\n");
+      }
+      JOptionPane.showMessageDialog(null, sb.toString());
+   }
+}
