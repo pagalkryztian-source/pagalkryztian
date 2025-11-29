@@ -1,0 +1,919 @@
+import java.util.Random;
+import javax.swing.JOptionPane;
+import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+public class bDo {
+   public static void main(String[] args) {
+   
+      Random rand = new Random();
+      LocalDateTime now = LocalDateTime.now();
+      DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+   
+        // Account and user info
+      boolean hasAcc = false;
+      int balance = 0;
+      String depStatus = "";
+      int accPin = 0;
+      int pin = 0;
+      String fullName = "";
+      String eMail = "";
+      String conNumber = "";
+      String age = "";
+      String Gender = "";
+      String Nationality = "";
+      String CivilStat = "";
+      String address = "";
+      long rNum = 0;
+      int tries = 0;
+   
+        // Administrator credentials
+      String adminPw = "AdminBdo1902";
+      String admin = "";
+   
+        // Arrays to store account data and transaction history
+      ArrayList<String> FName = new ArrayList<>();
+      ArrayList<Integer> wDraw = new ArrayList<>();
+      ArrayList<Integer> dPosit = new ArrayList<>();
+      ArrayList<Integer> tMoney = new ArrayList<>();
+      ArrayList<Integer> cBalance = new ArrayList<>();
+      ArrayList<String> forPin = new ArrayList<>();
+      ArrayList<String> withdrawTime = new ArrayList<>();
+      ArrayList<String> depositTime = new ArrayList<>();
+      ArrayList<String> checkBalanceTime = new ArrayList<>();
+   
+      JOptionPane.showMessageDialog(null, "====| Welcome To BDO Smart Banking |====");
+   
+      Transfer trans = new Transfer(); // Handles transfers separately
+      Loan loan = new Loan();
+   
+      while (true) {
+            // Main menu options
+         String[] options = { "Create Account", "Log-in", "Login As Administrator", "Forgot PIN", "Exit" };
+         String Options = (String) JOptionPane.showInputDialog(
+            null,
+            "Select A Transaction",
+            "BDO Main Menu",
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            options,
+            options[0]);
+      
+         if (Options.equals("Exit")) {
+            JOptionPane.showMessageDialog(null, "===| Thank You For Using BDO |===");
+            System.exit(0);
+         }
+      
+            // Create a new account
+         if (Options.equals("Create Account")) {
+            int yN = JOptionPane.showConfirmDialog(
+               null,
+               "Create Account",
+               "Account Setup",
+               JOptionPane.YES_NO_OPTION);
+         
+            if (hasAcc) {
+               JOptionPane.showMessageDialog(null,
+                  "Already Have An Existing Account.",
+                  "Warning",
+                  JOptionPane.WARNING_MESSAGE);
+               continue;
+            }
+         
+            if (yN == JOptionPane.NO_OPTION) {
+               JOptionPane.showMessageDialog(null, "Returning To Main Menu...");
+               continue;
+            } else {
+                    // Collect user information
+               String fName = JOptionPane.showInputDialog("Enter First Name: ");
+               if (fName == null || fName.trim().isEmpty()) {
+                  JOptionPane.showMessageDialog(null, "Action Cancelled or Invalid Input", "Warning", JOptionPane.WARNING_MESSAGE);
+                  continue;
+               }
+               fName = fName.trim();
+            
+               String mName = JOptionPane.showInputDialog("Enter Middle Name: ");
+               if (mName == null || mName.trim().isEmpty()) {
+                  JOptionPane.showMessageDialog(null, "Action Cancelled or Invalid Input", "Warning", JOptionPane.WARNING_MESSAGE);
+                  continue;
+               }
+               mName = mName.trim();
+            
+               String lName = JOptionPane.showInputDialog("Enter Last Name: ");
+               
+               fullName = (fName + " " + mName + " " + mName);
+               
+               if (lName == null || lName.trim().isEmpty()) {
+                  JOptionPane.showMessageDialog(null, "Action Cancelled or Invalid Input", "Warning", JOptionPane.WARNING_MESSAGE);
+                  continue;
+               }
+               lName = lName.trim();
+            
+               eMail = JOptionPane.showInputDialog("Enter Email Address: ");
+               if (eMail == null || eMail.trim().isEmpty()) {
+                  JOptionPane.showMessageDialog(null, "Action Cancelled or Invalid Input", "Warning", JOptionPane.WARNING_MESSAGE);
+                  continue;
+               }
+               eMail = eMail.trim();
+            
+               fullName = fName + " " + mName + " " + lName;
+            
+               age = JOptionPane.showInputDialog("Enter Age: ");
+               if (age == null || age.trim().isEmpty()) {
+                  JOptionPane.showMessageDialog(null, "Action Cancelled or Invalid Input", "Warning", JOptionPane.WARNING_MESSAGE);
+                  continue;
+               }
+               age = age.trim();
+            
+               conNumber = JOptionPane.showInputDialog("Enter Mobile Number: ");
+               if (conNumber == null || conNumber.trim().isEmpty()) {
+                  JOptionPane.showMessageDialog(null, "Action Cancelled or Invalid Input", "Warning", JOptionPane.WARNING_MESSAGE);
+                  continue;
+               }
+               conNumber = conNumber.trim();
+            
+               String[] gender = { "Male", "Female", "Others" };
+               Gender = (String) JOptionPane.showInputDialog(
+                  null,
+                  "Select Gender",
+                  "Options",
+                  JOptionPane.QUESTION_MESSAGE,
+                  null,
+                  gender,
+                  gender[0]);
+                 
+               if (Gender == null) {
+                  JOptionPane.showMessageDialog(null, "Action Cancelled", "Warning", JOptionPane.WARNING_MESSAGE);
+                  continue;
+               }
+            
+               String[] nationality = { "Filipino","American","Canadian","British","Australian",
+                  "Chinese","Japanese","Korean","Indian","Singaporean","Indonesian",
+                  "Malaysian","Thai","Vietnamese","French","German","Italian","Spanish",
+                  "Russian","Mexican","Brazilian","Saudi Arabian","South African","Egyptian"};
+               Nationality = (String) JOptionPane.showInputDialog(
+                  null,
+                  "Select Nationality",
+                  "Profile",
+                  JOptionPane.QUESTION_MESSAGE,
+                  null,
+                  nationality,
+                  nationality[0]);
+                
+               if (Nationality == null) {
+                  JOptionPane.showMessageDialog(null, "Action Cancelled", "Warning", JOptionPane.WARNING_MESSAGE);
+                  continue;
+               }
+            
+               address = JOptionPane.showInputDialog("Enter Full Address: ");
+               if (address == null || address.trim().isEmpty()) {
+                  JOptionPane.showMessageDialog(null, "Action Cancelled or Invalid Input", "Warning", JOptionPane.WARNING_MESSAGE);
+                  continue;
+               }
+               address = address.trim();
+            
+               String[] civilStat = { "Married", "Widowed", "Single" };
+               CivilStat = (String) JOptionPane.showInputDialog(
+                  null,
+                  "Select Civil Status",
+                  "Profile",
+                  JOptionPane.QUESTION_MESSAGE,
+                  null,
+                  civilStat,
+                  civilStat[0]);
+                   
+               if (CivilStat == null) {
+                  JOptionPane.showMessageDialog(null, "Action Cancelled", "Warning", JOptionPane.WARNING_MESSAGE);
+                  continue;
+               }
+            
+                    // PIN creation and verification
+               while (true) {
+                  try {
+                     pin = Integer.parseInt(JOptionPane.showInputDialog("Create a 4-Digit PIN Number: "));
+                  } catch (Exception e) {
+                     JOptionPane.showMessageDialog(null, "Action Cancelled or Invalid PIN", "Warning", JOptionPane.WARNING_MESSAGE);
+                     break;
+                  }
+               
+                  if (pin < 1000 || pin > 9999) {
+                     JOptionPane.showMessageDialog(null, "PIN Must Be Four Digits", "Warning", JOptionPane.WARNING_MESSAGE);
+                     continue;
+                  }
+               
+                  int cpin;
+                  try {
+                     cpin = Integer.parseInt(JOptionPane.showInputDialog("Confirm PIN Number: "));
+                  } catch (Exception e) {
+                     JOptionPane.showMessageDialog(null, "Action Cancelled or Invalid PIN", "Warning", JOptionPane.WARNING_MESSAGE);
+                     break;
+                  }
+               
+                  if (pin != cpin) {
+                     JOptionPane.showMessageDialog(null, "Incorrect PIN Please Try Again.", "Warning", JOptionPane.WARNING_MESSAGE);
+                     continue;
+                  }
+               
+                  hasAcc = true;
+                  rNum = 1000000000L + (long)(rand.nextDouble() * 9000000000L);
+                  JOptionPane.showMessageDialog(null, "====| Account Successfully Created |====\nYour Account Number is: " + rNum);
+               
+                  try {
+                     int iDeposit = Integer.parseInt(JOptionPane.showInputDialog("Initialize Deposit Amount: "));
+                     balance += iDeposit;
+                     JOptionPane.showMessageDialog(null,
+                        "======| ACCOUNT INFORMATION |======\n\n"
+                        + "Full Name: " + fullName + "\n"
+                        + "Age: " + age + "\n"
+                        + "Gender: " + Gender + "\n"
+                        + "Address: " + address + "\n"
+                        + "Nationality: " + Nationality + "\n"
+                        + "Civil Status: " + CivilStat + "\n"
+                        + "Email Address: " + eMail + "\n"
+                        + "Contact Number: " + conNumber + "\n"
+                        + "Account Number: " + rNum + "\n"
+                        + "PIN: " + pin + "\n"
+                        + "----------------------------------\n"
+                        + "Account Balance: $" + balance + "\n"
+                        + "----------------------------------");
+                  
+                     FName.add(fullName);
+                     depositTime.add(LocalDateTime.now().format(format));
+                     dPosit.add(iDeposit);
+                  } catch (Exception e) {
+                     JOptionPane.showMessageDialog(null, "Deposit Cancelled. Returning to Main Menu.", "Warning", JOptionPane.WARNING_MESSAGE);
+                  }
+                  break;
+               }
+            }
+         }
+         
+         
+      // Handle "Forgot PIN" process
+         if (Options.equals("Forgot PIN")) { 
+            
+         // Collect account identification details
+            String crNum = JOptionPane.showInputDialog("Enter Account Number: ");
+            String fulName = JOptionPane.showInputDialog("Enter Full Name: ");
+            String conNumb = JOptionPane.showInputDialog("Enter Contact Number: ");
+         
+         // Reason selection for PIN recovery
+            String[] reason = { 
+               "Forgot PIN", 
+               "Alzheimer's / Memory Issue", 
+               "Lost Contact Number", 
+               "Phone Stolen", 
+               "Lost Bank Card", 
+               "Other" 
+               };
+         
+            String Reason = (String) JOptionPane.showInputDialog(
+               null,
+               "Select the reason for requesting PIN recovery:",
+               "Forgot PIN",
+               JOptionPane.QUESTION_MESSAGE,
+               null,
+               reason,
+               reason[0]
+               );
+         
+            String eMail1 = JOptionPane.showInputDialog("Enter Email Address: ");
+         
+         // Validate the provided identification details
+            if (!fulName.equals(fullName) 
+            || !conNumb.equals(conNumber) 
+            || !eMail1.equals(eMail) 
+            || (!crNum.equals(String.valueOf(rNum)))) { 
+            
+               JOptionPane.showMessageDialog(
+                  null,
+                  "Account not found. Please verify your information and try again.",
+                  "Warning",
+                  JOptionPane.WARNING_MESSAGE
+                  );
+               continue;
+            }   
+         // End of identification validation block
+         
+         // Notify user that a verification code has been sent
+            JOptionPane.showMessageDialog(null, "A verification code will be sent to " + eMail);
+         
+         // Generate and display verification code
+            int rNum2 = rand.nextInt(9999) + 1001;
+            JOptionPane.showMessageDialog(
+               null,
+               "=====| VERIFICATION CODE |=====\n\n"
+               + "Verification Code: " + rNum2 + "\n"
+               + "----------------------------------"
+               );
+         
+         // Verification code input loop
+            while (true) {
+               int vCode = Integer.parseInt(
+                  JOptionPane.showInputDialog("Enter Verification Code: ")
+                  );
+            
+            // Check verification code
+               if (vCode != rNum2) {
+                  JOptionPane.showMessageDialog(
+                     null,
+                     "Incorrect verification code. Please try again.",
+                     "Warning",
+                     JOptionPane.WARNING_MESSAGE
+                     );
+                  continue;
+               } else {
+               // Display account information upon successful verification
+                  JOptionPane.showMessageDialog(
+                     null,
+                     "======| ACCOUNT INFORMATION |======\n\n"
+                     + "Account Holder: " + fullName + "\n"
+                     + "PIN Number: " + pin + "\n"
+                     + "Balance: $" + balance + "\n\n"
+                     + "Date and Time: " + LocalDateTime.now().format(format) + "\n"
+                     + "--------------------------------"
+                     );
+                  break;
+               }
+            } 
+         // End of verification loop
+         } 
+      // End of "Forgot PIN" option block
+      
+      
+      // =========================== ADMIN LOGIN SECTION ===========================
+         if (Options.equals("Login As Administrator")) {
+         
+            while (true) {
+            
+            // Prompt for administrator access code
+               admin = JOptionPane.showInputDialog("Enter Admin Code: ");
+            
+            // Validate if Cancel or X was pressed
+               if (admin == null) {
+                  JOptionPane.showMessageDialog(null,
+                     "Returning to Main Menu...",
+                     "Notice",
+                     JOptionPane.INFORMATION_MESSAGE
+                     );
+                  break; // <-- return to main menu, do NOT exit
+               }
+            
+            // Validate empty or spaces only
+               if (admin.trim().isEmpty()) {
+                  JOptionPane.showMessageDialog(
+                     null,
+                     "Input cannot be empty.",
+                     "Warning",
+                     JOptionPane.WARNING_MESSAGE
+                     );
+                  continue;
+               }
+            
+            // Validate admin passcode
+               if (!admin.equals(adminPw)) {
+                  JOptionPane.showMessageDialog(
+                     null,
+                     "Incorrect passcode.",
+                     "Warning",
+                     JOptionPane.WARNING_MESSAGE
+                     );
+                  continue;
+               }
+            
+            // Successful admin login
+               JOptionPane.showMessageDialog(null, "====| WELCOME ADMIN |====");
+               break;
+            }
+         
+         // If admin login failed and loop ended, prevent entering admin menu
+            if (!adminPw.equals(admin)) {
+               continue;
+            }
+         
+         // ===================== ADMIN MAIN MENU LOOP =====================
+            while (true) {
+            
+               String[] choices = {
+                  "Check User Balance",
+                  "Transaction History",
+                  "User Information",
+                  "Back",
+                  "Exit"
+                  };
+            
+               String Choices = (String) JOptionPane.showInputDialog(
+                  null,
+                  "Options",
+                  "Main Menu",
+                  JOptionPane.QUESTION_MESSAGE,
+                  null,
+                  choices,
+                  choices[0]
+                  );
+            
+            // Handle CANCEL or X
+               if (Choices == null) {
+                  JOptionPane.showMessageDialog(null,
+                     "Returning to Main Menu...",
+                     "Notice",
+                     JOptionPane.INFORMATION_MESSAGE
+                     );
+                  break;
+               }
+            
+            // Return to main program menu
+               if (Choices.equals("Back")) {
+                  JOptionPane.showMessageDialog(null, "=====| Returning to Main Menu |=====");
+                  break;
+               }
+            
+            // Terminate the system
+               if (Choices.equals("Exit")) {
+                  JOptionPane.showMessageDialog(null, "=====| System Closed |=====");
+                  System.exit(0);
+               }
+            
+            // ===================== CHECK USER BALANCE =====================
+               if (Choices.equals("Check User Balance")) {
+               
+                  String aName = JOptionPane.showInputDialog("Enter Client's Account Number:");
+               
+               // Validate cancel, X
+                  if (aName == null) {
+                     JOptionPane.showMessageDialog(null,
+                        "Operation cancelled.",
+                        "Notice",
+                        JOptionPane.INFORMATION_MESSAGE
+                        );
+                     continue;
+                  }
+               
+               // Validate empty
+                  if (aName.trim().isEmpty()) {
+                     JOptionPane.showMessageDialog(null,
+                        "Input cannot be empty.",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE
+                        );
+                     continue;
+                  }
+               
+               // Check transactions
+                  if (wDraw.isEmpty()) {
+                     JOptionPane.showMessageDialog(null,
+                        "Account Not Found",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+                     continue;
+                  }
+               
+               // Validate account number
+                  if (aName.equals(String.valueOf(rNum))) {
+                     JOptionPane.showMessageDialog(
+                        null,
+                        "=====| USER INFORMATION |=====\n\n"
+                        + "Account Holder: " + fullName + "\n"
+                        + "Balance: $" + balance + "\n"
+                        + "------------------------------------"
+                        );
+                  } else {
+                     JOptionPane.showMessageDialog(
+                        null,
+                        "Account number not found.",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE
+                        );
+                  }
+               }
+            
+            // ===================== USER INFORMATION =====================
+               if (Choices.equals("User Information")) {
+               
+                  String Uname = JOptionPane.showInputDialog("Enter Client's Account Number:");
+               
+               // Cancel or X
+                  if (Uname == null) {
+                     JOptionPane.showMessageDialog(null, "Operation cancelled.");
+                     continue;
+                  }
+               
+               // Empty
+                  if (Uname.trim().isEmpty()) {
+                     JOptionPane.showMessageDialog(
+                        null,
+                        "Invalid input.",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE
+                        );
+                     continue;
+                  }
+               
+               // Check existence
+                  if (!Uname.equals(String.valueOf(rNum))) {
+                     JOptionPane.showMessageDialog(
+                        null,
+                        "Account number not found.",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE
+                        );
+                     continue;
+                  }
+               
+               // Display data
+                  String uInfo =
+                     "======| ACCOUNT INFORMATION |======\n\n"
+                     + "Full Name: " + fullName + "\n"
+                     + "Age: " + age + "\n"
+                     + "Gender: " + Gender + "\n"
+                     + "Address: " + address + "\n"
+                     + "Nationality: " + Nationality + "\n"
+                     + "Civil Status: " + CivilStat + "\n"
+                     + "Email Address: " + eMail + "\n"
+                     + "Contact Number: " + conNumber + "\n"
+                     + "Account Number: " + rNum + "\n"
+                     + "PIN: " + pin + "\n"
+                     + "----------------------------------\n"
+                     + "Account Balance: $" + balance + "\n"
+                     + "----------------------------------";
+               
+                  JOptionPane.showMessageDialog(null, uInfo);
+               }
+            
+            // ===================== TRANSACTION HISTORY =====================
+               if (Choices.equals("Transaction History")) {
+               
+                  String tHistory = JOptionPane.showInputDialog("Enter Client's Account Number:");
+               
+               // Cancel or X
+                  if (tHistory == null) {
+                     JOptionPane.showMessageDialog(null, "Operation cancelled.");
+                     continue;
+                  }
+               
+               // Empty
+                  if (tHistory.trim().isEmpty()) {
+                     JOptionPane.showMessageDialog(
+                        null,
+                        "Invalid input.",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE
+                        );
+                     continue;
+                  }
+               
+               // Validate account
+                  if (!tHistory.equals(String.valueOf(rNum))) {
+                     JOptionPane.showMessageDialog(
+                        null,
+                        "Account number not found.",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE
+                        );
+                     continue;
+                  }
+               
+               // ===== Transaction History Inner Menu =====
+                  while (true) {
+                  
+                     String[] transaction = {
+                        "Withdraw History",
+                        "Deposit History",
+                        "Check Balance History",
+                        "Transfer History",
+                        "Back",
+                        "Exit"
+                        };
+                  
+                     String Transaction = (String) JOptionPane.showInputDialog(
+                        null,
+                        "Transaction History",
+                        "History",
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        transaction,
+                        transaction[0]
+                        );
+                  
+                  // Cancel or X
+                     if (Transaction == null) {
+                        JOptionPane.showMessageDialog(null,
+                           "Returning to Main Menu...",
+                           "Notice",
+                           JOptionPane.INFORMATION_MESSAGE
+                           );
+                        break;
+                     }
+                  
+                     if (Transaction.equals("Back")) {
+                        JOptionPane.showMessageDialog(null, "=====| Returning to Main Menu |=====");
+                        break;
+                     }
+                  
+                     if (Transaction.equals("Exit")) {
+                        JOptionPane.showMessageDialog(null, "======| System Closed |======");
+                        System.exit(0);
+                     }
+                  
+                  // WITHDRAW HISTORY
+                     if (Transaction.equals("Withdraw History")) {
+                        StringBuilder sb = new StringBuilder("=====| Withdrawal History |=====\n\n");
+                     
+                        for (int i = 0; i < wDraw.size(); i++) {
+                           sb.append("Account Holder: ").append(FName.get(i)).append("\n");
+                           sb.append("Withdrawn Amount: $").append(wDraw.get(i)).append("\n\n");
+                           sb.append("Date and Time: ").append(withdrawTime.get(i)).append("\n");
+                           sb.append("------------------------------------------------------\n\n");
+                        }
+                        JOptionPane.showMessageDialog(null, sb.toString());
+                     }
+                  
+                  // DEPOSIT HISTORY
+                     if (Transaction.equals("Deposit History")) {
+                        StringBuilder sb = new StringBuilder("=====| Deposit History |=====\n\n");
+                     
+                        for (int i = 0; i < dPosit.size(); i++) {
+                           sb.append("Account Holder: ").append(FName.get(i)).append("\n");
+                           sb.append("Deposit Amount: $").append(dPosit.get(i)).append("\n");
+                           sb.append("Date and Time: ").append(depositTime.get(i)).append("\n");
+                           sb.append("------------------------------------------------------\n\n");
+                        }
+                        JOptionPane.showMessageDialog(null, sb.toString());
+                     }
+                  
+                  // CHECK BALANCE HISTORY
+                     if (Transaction.equals("Check Balance History")) {
+                        StringBuilder sb = new StringBuilder("======| Check Balance History |======\n\n");
+                     
+                        for (int i = 0; i < cBalance.size(); i++) {
+                           sb.append("Account Holder: ").append(FName.get(i)).append("\n");
+                           sb.append("Balance: $").append(cBalance.get(i)).append("\n\n");
+                           sb.append("Date and Time: ").append(checkBalanceTime.get(i)).append("\n");
+                           sb.append("------------------------------------------------------\n\n");
+                        }
+                        JOptionPane.showMessageDialog(null, sb.toString());
+                     }
+                  
+                  // TRANSFER HISTORY
+                     if (Transaction.equals("Transfer History")) {
+                        trans.showTransferHistory();
+                     }
+                  }
+               }
+            }
+         }
+      // ======================= END OF ADMIN LOGIN SECTION ========================
+           
+           
+        // =========================== LOG-IN SECTION ===========================
+         if (Options.equals("Log-in")) {
+         
+            if (!hasAcc) {
+               JOptionPane.showMessageDialog(null,
+                  "No Account Found",
+                  "Warning",
+                  JOptionPane.WARNING_MESSAGE);
+               continue;
+            }
+         
+            int yesNo = JOptionPane.showConfirmDialog(
+               null,
+               "Insert Credit Card",
+               "BDO",
+               JOptionPane.YES_NO_OPTION
+               );
+         
+            if (yesNo == JOptionPane.NO_OPTION) {
+               JOptionPane.showMessageDialog(null, "Returning...");
+               continue;
+            }
+         
+         // ========= PIN INPUT WITH VALIDATION =========
+            String pinInput = JOptionPane.showInputDialog("Enter PIN Number: ");
+         
+         // Cancel or X
+            if (pinInput == null) {
+               JOptionPane.showMessageDialog(null,
+                  "Returning to Main Menu...",
+                  "Notice",
+                  JOptionPane.INFORMATION_MESSAGE);
+               continue;
+            }
+         
+         // Empty
+            if (pinInput.trim().isEmpty()) {
+               JOptionPane.showMessageDialog(null,
+                  "Input cannot be empty.",
+                  "Warning",
+                  JOptionPane.WARNING_MESSAGE);
+               continue;
+            }
+         
+         // Must be numeric
+            if (!pinInput.matches("\\d+")) {
+               JOptionPane.showMessageDialog(null,
+                  "PIN must be numeric.",
+                  "Warning",
+                  JOptionPane.WARNING_MESSAGE);
+               continue;
+            }
+         
+            int pin1 = Integer.parseInt(pinInput);
+         
+         // Wrong PIN
+            if (pin1 != pin) {
+               tries++;
+               JOptionPane.showMessageDialog(null,
+                  "Incorrect PIN Number",
+                  "Warning",
+                  JOptionPane.WARNING_MESSAGE);
+            
+               if (tries >= 3) {
+                  JOptionPane.showMessageDialog(null,
+                     "Account Locked. 3 Attempts Made.",
+                     "Warning",
+                     JOptionPane.WARNING_MESSAGE);
+                  System.exit(0);
+               }
+               continue;
+            }
+         
+         // ========= SUCCESSFUL LOGIN =========
+            while (true) {
+            
+               String[] options2 = {
+                  "Deposit", "Withdraw", "Transfer Money",
+                  "Check Balance","Loan", "Back", "Exit"
+                  };
+            
+               String Options2 = (String) JOptionPane.showInputDialog(
+                  null,
+                  "Main Menu",
+                  "BDO",
+                  JOptionPane.QUESTION_MESSAGE,
+                  null,
+                  options2,
+                  options2[0]
+                  );
+            
+            // Handle cancel or X
+               if (Options2 == null) {
+                  JOptionPane.showMessageDialog(null,
+                     "Returning to Main Menu...",
+                     "Notice",
+                     JOptionPane.INFORMATION_MESSAGE);
+                  break;
+               }
+            
+               if (Options2.equals("Back")) {
+                  JOptionPane.showMessageDialog(null,
+                     "=====| Returning To Main Menu |=====");
+                  break;
+               }
+            
+               if (Options2.equals("Exit")) {
+                  JOptionPane.showMessageDialog(null,
+                     "====| Thank You For Using BDO |====");
+                  System.exit(0);
+               }
+            
+            // ====================== DEPOSIT ======================
+               if (Options2.equals("Deposit")) {
+               
+                  String depInput = JOptionPane.showInputDialog(
+                     "=====| BDO |=====\nDeposit\n\nEnter Amount:");
+               
+               // Cancel or X
+                  if (depInput == null) {
+                     JOptionPane.showMessageDialog(null, "Operation Cancelled.");
+                     continue;
+                  }
+               
+               // Empty
+                  if (depInput.trim().isEmpty()) {
+                     JOptionPane.showMessageDialog(null, "Invalid Input.");
+                     continue;
+                  }
+               
+               // Must be numeric
+                  if (!depInput.matches("\\d+")) {
+                     JOptionPane.showMessageDialog(null, "Invalid Input.");
+                     continue;
+                  }
+               
+                  int deposit1 = Integer.parseInt(depInput);
+               
+                  if (deposit1 <= 0) {
+                     JOptionPane.showMessageDialog(null,
+                        "Invalid Input",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+                     continue;
+                  }
+               
+                  balance += deposit1;
+               
+                  depStatus =
+                     "====| Deposit Successful |====\n\n" +
+                     "Deposited Amount: $" + deposit1 + "\n" +
+                     "Current Balance: $" + balance + "\n\n" +
+                     "Date And Time: " + LocalDateTime.now().format(format) + "\n" +
+                     "------------------------------------------";
+               
+                  JOptionPane.showMessageDialog(null, depStatus);
+                  depositTime.add(LocalDateTime.now().format(format));
+                  FName.add(fullName);
+                  dPosit.add(deposit1);
+               }
+            
+            // ====================== WITHDRAW ======================
+               if (Options2.equals("Withdraw")) {
+               
+                  String wInput = JOptionPane.showInputDialog(
+                     "=====| BDO |=====\nWithdraw\n\nEnter Amount:"
+                     );
+               
+               // Cancel or X
+                  if (wInput == null) {
+                     JOptionPane.showMessageDialog(null, "Operation Cancelled.");
+                     continue;
+                  }
+               
+                  if (wInput.trim().isEmpty() || !wInput.matches("\\d+")) {
+                     JOptionPane.showMessageDialog(null, "Invalid Input.");
+                     continue;
+                  }
+               
+                  int withdraw1 = Integer.parseInt(wInput);
+               
+                  if (withdraw1 <= 0) {
+                     JOptionPane.showMessageDialog(null, "Invalid Input.");
+                     continue;
+                  }
+               
+                  if (withdraw1 > balance) {
+                     JOptionPane.showMessageDialog(null, "Insufficient Balance.");
+                     continue;
+                  }
+               
+                  if (withdraw1 > 20000) {
+                     JOptionPane.showMessageDialog(null,
+                        "Exceeded daily limit of $20,000.");
+                     continue;
+                  }
+               
+                  balance -= withdraw1;
+               
+                  String depStatus1 =
+                     "=====| Withdrawn Successfully |=====\n\n" +
+                     "Withdrawal Amount: $" + withdraw1 + "\n" +
+                     "Current Balance: $" + balance + "\n\n" +
+                     "Date And Time: " + LocalDateTime.now().format(format) + "\n" +
+                     "------------------------------------------\n";
+               
+                  JOptionPane.showMessageDialog(null, depStatus1);
+                  withdrawTime.add(LocalDateTime.now().format(format));
+                  FName.add(fullName);
+                  wDraw.add(withdraw1);
+               }
+            
+            // ====================== CHECK BALANCE ======================
+               if (Options2.equals("Check Balance")) {
+               
+                  JOptionPane.showMessageDialog(null,
+                     "=====| ACCOUNT BALANCE |=====\n\n" +
+                     "Account Holder: " + fullName + "\n" +
+                     "Available Balance: $" + balance + "\n\n" +
+                     "Date And Time: " + LocalDateTime.now().format(format) + "\n" +
+                     "-----------------------------------------");
+               
+                  checkBalanceTime.add(LocalDateTime.now().format(format));
+                  FName.add(fullName);
+                  cBalance.add(balance);
+               }
+            
+            // ====================== TRANSFER ======================
+               if (Options2.equals("Transfer Money")) {
+                  trans.setBalance(balance);
+                  trans.setName(fullName);
+               
+                  balance = trans.transferMoney();
+               }
+               
+               if (Options2.equals("Loan")) {
+                  loan.lBalance(balance);
+                  loan.lFullName(fullName);
+                  balance = loan.loanSystem();
+               } // <- Loan 
+            }
+         }
+      }
+   }
+}
+
+
+
+
+
+
